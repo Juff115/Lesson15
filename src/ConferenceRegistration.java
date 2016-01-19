@@ -243,8 +243,6 @@ public class ConferenceRegistration extends javax.swing.JFrame {
             else
                 JOptionPane.showMessageDialog(this, "Guest is already enrolled");
         }
-        System.out.println(conf.getPeople());
-        
         
     }//GEN-LAST:event_btnenrollActionPerformed
 
