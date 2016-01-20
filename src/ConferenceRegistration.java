@@ -1,4 +1,9 @@
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
@@ -24,7 +29,27 @@ public class ConferenceRegistration extends javax.swing.JFrame {
         schedule.put("Java", d);
         list= new DefaultListModel();
         lstguests.setModel(list);
+        openFile();
         update("Android");
+        
+    }
+    
+    public void openFile(){
+        try{
+            FileReader fr= new FileReader("Conference.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String key, data;
+            Guest g;
+            while(true){
+                key=br.readLine();
+                if(key==null) break;
+                data=br.readLine();
+                g= new Guest(data);
+                schedule.get(key).signup(g);
+            }
+            br.close();
+        }catch(Exception e){}
+        
         
     }
 
@@ -54,6 +79,7 @@ public class ConferenceRegistration extends javax.swing.JFrame {
         lbldesc = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstguests = new javax.swing.JList();
+        btnsave = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnenroll = new javax.swing.JButton();
         btnremove = new javax.swing.JButton();
@@ -129,13 +155,22 @@ public class ConferenceRegistration extends javax.swing.JFrame {
         lstguests.setFixedCellHeight(16);
         jScrollPane2.setViewportView(lstguests);
 
+        btnsave.setText("Save & Exit");
+        btnsave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnsaveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbldesc, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbldesc, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnsave))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -145,8 +180,11 @@ public class ConferenceRegistration extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2)
-                    .addComponent(lbldesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lbldesc, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnsave)))
                 .addContainerGap())
         );
 
@@ -206,7 +244,7 @@ public class ConferenceRegistration extends javax.swing.JFrame {
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(lbltitle, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -271,6 +309,23 @@ public class ConferenceRegistration extends javax.swing.JFrame {
         update("Java");
     }//GEN-LAST:event_btnjavaActionPerformed
 
+    private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
+        FileWriter fw;
+        try{
+            fw = new FileWriter("Conference.txt");
+            PrintWriter p =new PrintWriter(fw);
+            a.save(p, "Android");
+            b.save(p, "Gaming");
+            c.save(p, "HTML");
+            d.save(p, "Java");
+            p.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        JOptionPane.showMessageDialog(this, "Conference Data Saved");
+        System.exit(0);
+    }//GEN-LAST:event_btnsaveActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -313,6 +368,7 @@ public class ConferenceRegistration extends javax.swing.JFrame {
     private javax.swing.JButton btnhtml;
     private javax.swing.JButton btnjava;
     private javax.swing.JButton btnremove;
+    private javax.swing.JButton btnsave;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

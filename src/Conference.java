@@ -1,4 +1,6 @@
+import java.io.PrintWriter;
 import java.util.HashSet;
+import java.util.Iterator;
 import javax.swing.ImageIcon;
 
 public class Conference {
@@ -44,6 +46,15 @@ public class Conference {
             return true;
         }
         else return false;
+    }
+    
+    public void save(PrintWriter pw, String key){
+        Iterator it = people.iterator();
+        while(it.hasNext()){
+            pw.println(key);
+            pw.println(it.next());
+        }
+        
     }
     
 }
